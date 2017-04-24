@@ -8,6 +8,8 @@ object Eliminator {
       case _ if n < k => (findSurvivorPositionInternal(n - 1, k) + k) % n
       case _ => {                                 // k <= n AND k != 1
         val n_prime = n - (n / k)
+
+        /* todo: math.abs is wrong here. New tests written show incorrect results here..*/
         k * (Math.abs(findSurvivorPositionInternal(n_prime, k) - (n % k)) % n_prime) / (k - 1)
       }
     }
