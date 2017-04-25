@@ -26,7 +26,7 @@ class EliminatorTest extends FlatSpec with Matchers {
   "findSurvivorPosition" should "be capable of calculating for large numbers" in {
     // this test just verifies that there is no crash at large numbers such as Int.MaxValue
     // A better test will be to ensure that this is the correct value.
-    findSurvivorPosition(Int.MaxValue, 1)
+    findSurvivorPosition(Int.MaxValue, 53)
   }
 
   "findSurvivorPosition" should "pass a variety of tests" in {
