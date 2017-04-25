@@ -23,6 +23,12 @@ class EliminatorTest extends FlatSpec with Matchers {
     findSurvivorPosition(100001, 1) shouldEqual (100001)
   }
 
+  "findSurvivorPosition" should "be capable of calculating for large numbers" in {
+    // this test just verifies that there is no crash at large numbers such as Int.MaxValue
+    // A better test will be to ensure that this is the correct value.
+    findSurvivorPosition(Int.MaxValue, 1)
+  }
+
   "findSurvivorPosition" should "pass a variety of tests" in {
     findSurvivorPosition(9, 4) shouldEqual 1
     findSurvivorPosition(10, 3) shouldEqual 4
@@ -31,16 +37,13 @@ class EliminatorTest extends FlatSpec with Matchers {
     findSurvivorPosition(7, 3) shouldEqual 4
   }
 
-  "findSurvivorPosition" should "consistent with on calculation" in {
+  "findSurvivorPosition" should "consistent with linear time algorithm results" in {
     findSurvivorPosition(9, 4) shouldEqual linearTimeAlgorithmVersion(9, 4) + 1
     findSurvivorPosition(10, 3) shouldEqual linearTimeAlgorithmVersion(10, 3) + 1
     findSurvivorPosition(6, 5) shouldEqual linearTimeAlgorithmVersion(6, 5) + 1
-
-    // todo: everything below here fails. The O(N) algorithm below, which suffers stackoverflow at large numbers,
-    // computes a different value. The discrepancy requires investigation.
     findSurvivorPosition(500, 3) shouldEqual linearTimeAlgorithmVersion(500, 3) + 1
     findSurvivorPosition(750, 4) shouldEqual linearTimeAlgorithmVersion(750, 4) + 1
-    findSurvivorPosition(Int.MaxValue, 2) shouldEqual linearTimeAlgorithmVersion(Int.MaxValue, 2) + 1
+    findSurvivorPosition(750, 1000) shouldEqual linearTimeAlgorithmVersion(750, 1000) + 1
   }
 
   "main" should "raise an error for non numeric inputs" in {
@@ -75,6 +78,6 @@ class EliminatorTest extends FlatSpec with Matchers {
 
   def linearTimeAlgorithmVersion(n: Int, k: Int): Int = n match {
     case 1 => 0
-    case _ => (linearTimeAlgorithmVersion(n -1, k) + k) % n
+    case _ => (linearTimeAlgorithmVersion(n - 1, k) + k) % n
   }
 }

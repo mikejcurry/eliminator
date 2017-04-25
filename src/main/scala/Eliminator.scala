@@ -1,16 +1,17 @@
 
 object Eliminator {
 
+  private def adjustIfNegative(calculated: Int, adjustment: Int): Int =
+    if (calculated < 0) calculated + adjustment else calculated
+
   private def findSurvivorPositionInternal(n: Int, k: Int): Int = {
     (n, k) match {
       case (_, k) if k == 1 => n - 1  // minor optimization - when step size is one, last is the survivor (zero based)
       case (n, _) if n == 1 => 0
       case _ if n < k => (findSurvivorPositionInternal(n - 1, k) + k) % n
-      case _ => {                                 // k <= n AND k != 1
+      case _ => {                                 // k <= n AND k > 1
         val n_prime = n - (n / k)
-
-        /* todo: math.abs is wrong here. New tests written show incorrect results here..*/
-        k * (Math.abs(findSurvivorPositionInternal(n_prime, k) - (n % k)) % n_prime) / (k - 1)
+        k * (adjustIfNegative(findSurvivorPositionInternal(n_prime, k) - (n % k) % n_prime, n_prime)) / (k - 1)
       }
     }
   }
